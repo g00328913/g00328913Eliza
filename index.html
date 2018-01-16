@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chatbot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <header>
+	
+		<!-- https://getbootstrap.com/docs/4.0/components/navbar/ -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+	  <a class="navbar-brand" href="#">Chatbot</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+	</nav>
+    </header>
+	
+	<h1>space</h1>
+	
+	
+    <main class="container frame">
+      <ul>
+      </ul>
+    </main>
+    <footer class="fixed-bottom  bg-dark">
+	 <!-- https://v4-alpha.getbootstrap.com/components/forms/ -->
+      <form class="form-inline">
+       <label class="sr-only" for="user-input">User input</label>
+          <div class="input-group text-r" style="background:whitesmoke !important; flex-grow: 5">
+              <input name="user-input" class="form-control text required" placeholder="enter text here"/>
+          </div>
+          <div class="btn-group">
+		  <!-- https://www.w3schools.com/bootstrap/bootstrap_buttons.asp -->
+            <button class="btn btn-danger" type="submit">Enter</button>
+          </div>
+      </form>
+    </footer>
+	
+	
+     <!--jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+   
+	 <!-- Optional JavaScript -->
+   <script>
+      $( document ).ready(function() {
+        $("form").submit(function(event){
+          event.preventDefault();
+          var userInput = $('input[name=user-input]').val();
+          var formData = JSON.stringify({
+            'UserMessage' : userInput
+          });
+          // https://stackoverflow.com/questions/8701812/clear-form-after-submission-with-jquery
+          $( "form" ).each(function(){
+            this.reset();
+          });
+		  
+          // https://stackoverflow.com/questions/1145208/jquery-how-to-add-li-in-an-existing-ul
+          $('<li>')
+            .append($('<div>')
+              .append($('<div>')
+                .append($('<p>')
+                  .append(userInput))
+                  .append($('<p>')
+                    .append($('<small>')
+                    )
+                  )
+                .addClass("text text-r"))
+              .addClass("msj-rta macro"))
+            .appendTo( $("ul") ); // $('<li>')
+          //https://stackoverflow.com/questions/18701282/what-is-content-type-and-datatype-in-an-ajax-request
+          $.ajax({
+          url: '/ajax',
+          type: "post",
+          contentType: 'application/json; charset=utf-8',
+          data: formData,
+          dataType: 'json',
+          encode: true 
+          })
+		  // https://stackoverflow.com/questions/1145208/jquery-how-to-add-li-in-an-existing-ul
+          .done(function(response) {
+          $('<li>')
+            .append($('<div>')
+              .append($('<div>')
+                .append($('<p>')
+                  .append(response.ElizaMessage))
+                  .append($('<p>')
+                    .append($('<small>'))
+                  )
+                .addClass("text text-l"))
+              .addClass("msj-rta macro"))
+            .appendTo( $("ul") ); 
+          }) 
+          .fail(function(data) {
+            
+            console.log(data);
+          }) 
+          ; 
+        }); 
+      }); 
+    </script>
+  </body>
+</html>
